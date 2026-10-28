@@ -14,7 +14,7 @@ app.listen(PORT, () => {
 });
 
 // --- 2. Minecraft AFK Bot ---
-const MC_HOST = 'YOUR_SERVER_IP'; // e.g. "myserver.aternos.me"
+const MC_HOST = 'jamsmp.mcsh.gg'; // e.g. "myserver.aternos.me"
 const MC_PORT = 25565;            // Default port or host assigned port
 
 function createBot() {
