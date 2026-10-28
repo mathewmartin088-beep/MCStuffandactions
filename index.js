@@ -1,37 +1,43 @@
 const express = require('express');
 const mineflayer = require('mineflayer');
 
-// --- 1. Web Server (Keep-Alive Endpoint) ---
+// --- 1. HTTP Server for Koyeb Uptime ---
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-  res.send('AFK Bot is active!');
+  res.send('KeepAliveBot is active!');
 });
 
 app.listen(PORT, () => {
-  console.log(`HTTP server listening on port ${PORT}`);
+  console.log(`Web server listening on port ${PORT}`);
 });
 
-// --- 2. Minecraft AFK Bot ---
-const MC_HOST = 'jamsmp.mcsh.gg'; // e.g. "myserver.aternos.me"
-const MC_PORT = 25565;            // Default port or host assigned port
+// --- 2. Bot Configuration ---
+const MC_HOST = 'jamsmp.mcsh.gg'; // Replace with your server IP / domain
+const MC_PORT = 25565;            // Replace with your server port
+const BOT_NAME = 'KeepAliveBot';  // Desired username for the bot
 
 function createBot() {
-  console.log('Connecting bot to Minecraft server...');
-  
+  console.log('Connecting bot to server...');
+
   const bot = mineflayer.createBot({
     host: MC_HOST,
     port: MC_PORT,
-    username: 'KeepAliveBot'
+    username: BOT_NAME,
+    physicsEnabled: false // Disables physics to prevent "Invalid move player packet" kicks
   });
 
   bot.on('spawn', () => {
-    console.log('Bot successfully joined the server!');
+    console.log(`${BOT_NAME} successfully spawned into the server and is now sitting AFK!`);
   });
 
   bot.on('error', (err) => {
-    console.error('Bot encountered error:', err.message);
+    console.error('Bot error:', err.message);
+  });
+
+  bot.on('kicked', (reason) => {
+    console.log('Bot was kicked:', reason);
   });
 
   bot.on('end', () => {
